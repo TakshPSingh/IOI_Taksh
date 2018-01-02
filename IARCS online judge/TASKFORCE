@@ -1,0 +1,48 @@
+// INOI_TASKFORCE.cpp : Defines the entry point for the console application.
+//
+
+//#include "stdafx.h"
+#include <iostream>
+#include <vector>
+#include <set>
+using namespace std;
+long long n, m, k, a, b,answer = 0;
+set <long long> adj[3005];
+long long degree[3005] = { 0 };
+void remove(int u)
+{
+	for (auto c : adj[u])
+	{
+		--degree[c];
+		adj[c].erase(u);
+	}
+	adj[u].clear();
+	degree[u] = 0;
+}
+int main()
+{
+	cin >> n >> m >> k;
+	for (long long i = 0; i < m; ++i)
+	{
+		cin >> a >> b;
+		adj[a].insert(b); ++degree[a];
+		adj[b].insert(a); ++degree[b];
+	}
+	for (long long i = 1; i <= n; ++i)
+	{
+		if (degree[i] < k)
+			remove(i);
+	}
+	for (long long i = 1; i <= n; ++i)
+	{
+		if (degree[i] >= k)
+			++answer;
+	}
+	if (answer > 0)
+	{
+		cout << "YES\n" << answer;
+	}
+	else
+		cout << "NO\n";
+    return 0;
+}
